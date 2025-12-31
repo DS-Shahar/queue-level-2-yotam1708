@@ -172,3 +172,386 @@ public class Main {
         System.out.println("new list: " + getList(d1));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ import java.util.*;
+
+public class Main {
+
+
+
+  
+
+///////////////////////////////////////////////////////////////// 1
+
+    public static Queue<Integer> getSequenceLengths(Queue<Character> q) {
+
+        Queue<Integer> counts = new Queue<Integer>();
+
+        if (q.isEmpty()) return counts;
+
+
+
+        Queue<Character> temp = copyQ(q);
+
+        int count = 1;
+
+        char current = temp.remove();
+
+
+
+        while (!temp.isEmpty()) {
+
+            if (temp.head() == current) {
+
+                count++;
+
+                temp.remove();
+
+            } else {
+
+                counts.insert(count);
+
+                current = temp.remove();
+
+                count = 1;
+
+            }
+
+        }
+
+        counts.insert(count);
+
+        return counts;
+
+    }
+
+
+
+///////////////////////////////////////////////////////////////// 2
+
+    public static boolean hasDuplicates(Queue<String> q) {
+
+        Queue<String> temp = copyQ(q);
+
+        while (!temp.isEmpty()) {
+
+            String current = temp.remove();
+
+            if (isIn(temp, current)) {
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+
+
+///////////////////////////////////////////////////////////////// 3
+
+    public static Queue<Integer> removeAllDuplicates(Queue<Integer> q) {
+
+        Queue<Integer> result = new Queue<Integer>();
+
+        Queue<Integer> temp = copyQ(q);
+
+
+
+        while (!temp.isEmpty()) {
+
+            int val = temp.remove();
+
+            if (!isIn(result, val)) {
+
+                result.insert(val);
+
+            }
+
+        }
+
+        return result;
+
+    }
+
+
+
+///////////////////////////////////////////////////////////////// 4
+
+    public static void sortQueue(Queue<Integer> q) {
+
+        Queue<Integer> helper = new Queue<Integer>();
+
+        int size = getSize(q);
+
+
+
+        for (int i = 0; i < size; i++) {
+
+            int min = findMinAndRemove(q);
+
+            helper.insert(min);
+
+        }
+
+
+
+        while (!helper.isEmpty()) {
+
+            q.insert(helper.remove());
+
+        }
+
+    }
+
+
+
+///////////////////////////////////////////////////////////////// 5
+
+    public static Queue<Integer> mergeSortedQueues(Queue<Integer> q1, Queue<Integer> q2) {
+
+        Queue<Integer> merged = new Queue<Integer>();
+
+        Queue<Integer> temp1 = copyQ(q1);
+
+        Queue<Integer> temp2 = copyQ(q2);
+
+
+
+        while (!temp1.isEmpty() && !temp2.isEmpty()) {
+
+            if (temp1.head() < temp2.head()) {
+
+                merged.insert(temp1.remove());
+
+            } else {
+
+                merged.insert(temp2.remove());
+
+            }
+
+        }
+
+
+
+        while (!temp1.isEmpty()) merged.insert(temp1.remove());
+
+        while (!temp2.isEmpty()) merged.insert(temp2.remove());
+
+
+
+        return merged;
+
+    }
+
+
+
+/////////////////////////////////////////////////////////////////
+
+// פעולות עזר
+
+    public static <T> Queue<T> copyQ(Queue<T> q) {
+
+        Queue<T> temp = new Queue<T>();
+
+        Queue<T> copy = new Queue<T>();
+
+        while (!q.isEmpty()) {
+
+            T val = q.remove();
+
+            temp.insert(val);
+
+            copy.insert(val);
+
+        }
+
+        while (!temp.isEmpty()) {
+
+            q.insert(temp.remove());
+
+        }
+
+        return copy;
+
+    }
+
+
+
+    public static <T> boolean isIn(Queue<T> q, T val) {
+
+        Queue<T> temp = copyQ(q);
+
+        while (!temp.isEmpty()) {
+
+            if (temp.remove().equals(val)) return true;
+
+        }
+
+        return false;
+
+    }
+
+
+
+    public static int getSize(Queue<Integer> q) {
+
+        int count = 0;
+
+        Queue<Integer> temp = copyQ(q);
+
+        while (!temp.isEmpty()) {
+
+            temp.remove();
+
+            count++;
+
+        }
+
+        return count;
+
+    }
+
+
+
+    private static int findMinAndRemove(Queue<Integer> q) {
+
+        int min = q.head();
+
+        int size = getSize(q);
+
+        for (int i = 0; i < size; i++) {
+
+            int val = q.remove();
+
+            if (val < min) min = val;
+
+            q.insert(val);
+
+        }
+
+        boolean removed = false;
+
+        for (int i = 0; i < size; i++) {
+
+            int val = q.remove();
+
+            if (val == min && !removed) {
+
+                removed = true;
+
+            } else {
+
+                q.insert(val);
+
+            }
+
+        }
+
+        return min;
+
+    }
+
+
+
+    public static <T> Queue<T> build(T[] arr) {
+
+        Queue<T> q = new Queue<T>();
+
+        for (T item : arr) {
+
+            q.insert(item);
+
+        }
+
+        return q;
+
+    }
+
+
+
+/////////////////////////////////////////////////////////////////
+
+    public static void main(String[] args) {
+
+//1
+
+        Queue<Character> q1 = build(new Character[]{'c', 'c', 'a', 'c'});
+
+        System.out.println("1. Sequences [c,c,a,c]: " + getSequenceLengths(q1));
+
+
+
+//2
+
+        Queue<String> q2 = build(new String[]{"apple", "banana", "apple"});
+
+        System.out.println("2. Has duplicates? " + hasDuplicates(q2));
+
+
+
+//3
+
+        Queue<Integer> q3 = build(new Integer[]{1, 3, 5, 3, 1, 9});
+
+        System.out.println("3. Clean duplicates: " + removeAllDuplicates(q3));
+
+
+
+//4
+
+        Queue<Integer> q4 = build(new Integer[]{10, 2, 8, 1, 5});
+
+        sortQueue(q4);
+
+        System.out.println("4. Sorted queue: " + q4);
+
+
+
+//5
+
+        Queue<Integer> m1 = build(new Integer[]{1, 3, 5});
+
+        Queue<Integer> m2 = build(new Integer[]{2, 4, 6});
+
+        System.out.println("5. Merged: " + mergeSortedQueues(m1, m2));
+
+    }
+
+}
