@@ -555,3 +555,94 @@ public class Main {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.util.*;
+
+public class QueueTasks {
+
+    public static Queue<Integer> sequenceLengths(Queue<Character> q) {
+        Queue<Integer> result = new LinkedList<Integer>();
+        if (q.isEmpty()) return result;
+
+        while (!q.isEmpty()) {
+            char current = q.remove();
+            int count = 1;
+            while (!q.isEmpty() && q.peek() == current) {
+                q.remove();
+                count++;
+            }
+            result.add(count);
+        }
+        return result;
+    }
+
+    public static boolean hasDuplicates(Queue<String> q) {
+        Queue<String> temp = new LinkedList<String>();
+        boolean found = false;
+
+        while (!q.isEmpty()) {
+            String val = q.remove();
+            if (isIn(temp, val)) {
+                found = true;
+            }
+            temp.add(val);
+        }
+
+        while (!temp.isEmpty()) {
+            q.add(temp.remove());
+        }
+
+        return found;
+    }
+
+    public static boolean isIn(Queue<String> q, String val) {
+        boolean exists = false;
+        int size = q.size();
+        for (int i = 0; i < size; i++) {
+            String current = q.remove();
+            if (current.equals(val)) {
+                exists = true;
+            }
+            q.add(current);
+        }
+        return exists;
+    }
+
+    public static void removeDuplicates(Queue<Integer> q) {
+        Queue<Integer> helper = new LinkedList<Integer>();
+
+        while (!q.isEmpty()) {
+            int current = q.remove();
+            helper.add(current);
+            removeAll(q, current);
+        }
+
+        while (!helper.isEmpty()) {
+            q.add(helper.remove());
+        }
+    }
+
+    public static void removeAll(Queue<Integer> q, int val) {
+        int size = q.size();
+        for (int i = 0; i < size; i++) {
+            int x = q.remove();
+            if (x != val) {
+                q.add(x);
+            }
+        }
+    }
+}
