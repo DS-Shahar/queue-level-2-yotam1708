@@ -646,3 +646,31 @@ public class QueueTasks {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+import java.util.*;
+public class Main {
+    
+    public static boolean tree(BinNode<Integer> tree1) {
+        boolean bool = false ;
+        if (tree1 == null) {
+            return true;
+        }
+        if (tree1.getRight()!=null){
+         if (tree1.getLeft()!=null){
+             bool = true;
+         }  
+        }
+        if (tree1.getLeft()!=null){
+             bool = true;
+         } 
+        return tree(tree1.getLeft()) && tree(tree1.getRight());
+    }
+}
